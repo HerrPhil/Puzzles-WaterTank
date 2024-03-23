@@ -35,7 +35,7 @@ public class GreedyTank {
 
         if (street.length() > 20) {
             System.out.printf("The street is too long %d%n", street.length());
-            return -1;
+            return result;
         }
 
         // if street has one or more empty spaces and no houses, then return no solution result.
@@ -140,9 +140,9 @@ public class GreedyTank {
 
         // check if the last position is a house,
         // and whether the previous position is a tank
-        int position = street.length() - 2;
-        if (streetValues[position] == '-' && streetValues[position + 1] == 'H') {
-            streetValues[position] = 'T';
+        int last = street.length() - 1;
+        if (streetValues[last - 1] == '-' && streetValues[last] == 'H') {
+            streetValues[last - 1] = 'T';
             result++;
         }
 
