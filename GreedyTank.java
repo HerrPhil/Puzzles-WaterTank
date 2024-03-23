@@ -15,12 +15,12 @@ public class GreedyTank {
 
     private int findMinimumTanks() {
 
-        //               12345678901234567890xxxxx
-//        String street = "H---HH--H----H---H-H";
+//                       12345678901234567890xxxxx
+        String street = "H---HH-H----H--H---H";
 //        String street = "-H-HH-H";
 //        String street = "-H-HH--";
 //        String street = "H---H-H";
-        String street = "--H";
+//        String street = "--H";
 
         System.out.printf("check this street %s%n", street);
 
@@ -100,18 +100,18 @@ public class GreedyTank {
         result = 0;
 
         // Otherwise, find minimum number of tanks
-        char [] streetValues = street.toCharArray();
-        for (int i = 0; i < street.length() - 1; i++) {
 
-            // check if the last position is a house,
-            // and whether the previous position is a tank
-            if (i == street.length() - 2) {
-                if (streetValues[i] == '-' && streetValues[i + 1] == 'H') {
-                    streetValues[i] = 'T';
-                    result++;
-                    continue;
-                }
-            }
+        char [] streetValues = street.toCharArray();
+
+        // check if index position 1 is free to place a bucket there
+        char first = streetValues[0];
+        char next = streetValues[1];
+        if (first == 'H' && next == '-') {
+            streetValues[1] = 'T';
+            result++;
+        }
+
+        for (int i = 1; i < street.length() - 1; i++) {
 
             // skip empty spaces or tanks or unrecognized values
             if (streetValues[i] == '-' || streetValues[i] == 'T' || streetValues[i] != 'H') {
@@ -120,33 +120,30 @@ public class GreedyTank {
 
             // otherwise the ith value should be a house now
 
-            if (i == 0) {
+            // check if we already placed a bucket at i - 1
+            char previous = streetValues[i - 1];
+            if (previous == 'T') {
+                continue;
+            } else {
                 // check if i + 1 is free to place a bucket there
-                char next = streetValues[i + 1];
+                next = streetValues[i + 1];
                 if (next == '-') {
                     streetValues[i + 1] = 'T';
                     result++;
                 }
-            }
-
-            if (i > 0) {
-                // check if we already placed a bucket at i - 1
-                char previous = streetValues[i - 1];
-                if (previous == 'T') {
-                    continue;
-                } else {
-                    // check if i + 1 is free to place a bucket there
-                    char next = streetValues[i + 1];
-                    if (next == '-') {
-                        streetValues[i + 1] = 'T';
-                        result++;
-                    }
-                    if (next == 'H') {
-                        streetValues[i - 1] = 'T';
-                        result++;
-                    }
+                if (next == 'H') {
+                    streetValues[i - 1] = 'T';
+                    result++;
                 }
             }
+        }
+
+        // check if the last position is a house,
+        // and whether the previous position is a tank
+        int position = street.length() - 2;
+        if (streetValues[position] == '-' && streetValues[position + 1] == 'H') {
+            streetValues[position] = 'T';
+            result++;
         }
 
         String streetWithTanks = String.valueOf(streetValues);
