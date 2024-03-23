@@ -17,6 +17,7 @@ public class GreedyTank {
 
 //                       12345678901234567890xxxxx
         String street = "H---HH-H----H--H---H";
+//      String street = "H---HH-H--HHH--H---H";
 //        String street = "-H-HH-H";
 //        String street = "-H-HH--";
 //        String street = "H---H-H";
@@ -131,9 +132,13 @@ public class GreedyTank {
                     streetValues[i + 1] = 'T';
                     result++;
                 }
-                if (next == 'H') {
+                if (next == 'H' && previous == '-') {
                     streetValues[i - 1] = 'T';
                     result++;
+                }
+                if (next == 'H' && previous == 'H') {
+                    // impossible
+                    return -1;
                 }
             }
         }
